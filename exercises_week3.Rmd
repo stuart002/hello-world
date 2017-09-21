@@ -1,0 +1,90 @@
+---
+title: "Exercises week 3"
+author: "Antoine Vernet"
+date: ''
+output:
+  pdf_document: default
+  html_document: default
+---
+
+Exercises 1
+
+The salary dataset contains the following variables:
+
+Variable | Description
+---------|-------------
+rank | a factor with levels AssocProf AsstProf Prof
+discipline | a factor with levels A (“theoretical” departments) or B (“applied” departments).
+yrs.since.phd | years since PhD.
+yrs.service | years of service.
+sex | a factor with levels Female Male
+salary | nine-month salary, in dollars.
+
+The dataset if from a college in the U.S. and contains data on the 2008-09 academic year.
+
+```{r}
+install.packages("car")
+```
+
+
+```{r}
+library(car)
+slr <- Salaries
+```
+
+```{r}
+slr
+```
+
+
+1. Plot the distribution of the variables in this dataset
+
+```{r}
+library(ggplot2)
+ggplot(data=slr,aes(x=salary))+geom_density(col="red")
+```
+
+2. Can you plot the conditional distribution of salary, years of service and years since phd for gender?
+
+```{r}
+ggplot(slr, aes(x=salary))+geom_density()+geom_density(aes(x=salary,color=sex))
+ggplot(slr, aes(x=yrs.service))+geom_density()+geom_density(aes(x=yrs.service,color=sex))
+ggplot(slr, aes(x=yrs.since.phd))+geom_density()+geom_density(aes(x=yrs.since.phd,color=sex))
+
+```
+
+3. How does the distribution of gender vary by discipline and rank? Compare this to the salary by rank and discipline. Does that give you any information about what is going on in this dataset?
+
+```{r}
+ggplot(slr, aes(x=rank, y= salary, color= sex))+geom_point(position="jitter")
+
+```
+
+4. Correlate years since the phd, years of service and salary. What can you observe?
+
+```{r}
+# Put your code in here
+cor(slr$yrs.since.phd, slr$salary)
+cor(slr$yrs.service, slr$salary)
+```
+
+5. Use an appropriate statistical test to test whether the mean salary of men and women are the same.
+
+```{r}
+# Put your code in here
+```
+
+6. Think of other tests you can use to better understand the difference between men and women in terms of their situation in the school, or of creative ways of selecting the samples to use for your tests. 
+
+```{r}
+# Put your code in here
+
+```
+
+7. Using salary as the dependent variable, build a linear model to try to explain what the determinants of salary are. What can you say about the differences between men and women?
+
+
+```{r}
+# Put your code in here
+
+```

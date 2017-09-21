@@ -1,0 +1,161 @@
+---
+title: "Exercises"
+author: ''
+date: ''
+output:
+  pdf_document: default
+  html_document: default
+subtitle: Week 2
+---
+
+## Exercise 1: Expected values
+
+
+1. The code below creates a sample of integer. Calculate the mean, and the variance for this distribution.
+What happens if you modify the code to increase the number of samples?
+
+```{r}
+set.seed(16092016)
+spl <- sample(0:100, size = 100, replace = TRUE)
+# Put your code in here
+mean(spl)
+var(spl)
+
+```
+
+
+## Exercise 2: Movie going in France
+
+Open the `market.RData` file. This dataset record information about the French movie market. There are 5 (or 4?) variables.
+
+|Variable|Description|
+|:-------|:----------|
+|`year`  |Year of record|
+|`screenings`|Number of screenings taking place in the country on that year|
+|`tickets`|Number of tickets sold in the country on that year|
+|`revenues`|Global revenue from moviegoing for this year|
+
+The revenues have already been adjusted for inflation
+
+- Calculate the average revenue per ticket for each year on record.
+- Plot the average revenue per ticket over the time period.
+- Calculate the growth in the number of ticket sold from each year to the next.
+- Describe how revenue and tickets numbers have changed over the period.
+- Does the number of screening increase or decrease? Did it increase faster or slower than the number of ticket sold? What can you conclude?
+
+```{r}
+load("./market.RData")
+# Put your code in here
+#1
+market$rev_tic <- market$revenues/market$tickets
+market
+```
+```{r}
+library(ggplot2)
+data <- data.frame(y = market$year, r = market$rev_tic) 
+ggplot(data, aes(x = market$year, y = market$rev_tic)) + geom_line()
+```
+
+```{r}
+market$tickets_growth <- "N/A"
+for (i in 2:length(market$tickets)){
+market$tickets_growth[i]<-(market$tickets[i]-market$tickets[i-1])/market$tickets[i-1]
+}
+market
+
+```
+```{r}
+market$revenues_growth <- "N/A"
+for (i in 2:length(market$revenues)){
+market$revenues_growth[i]<-(market$revenues[i]-market$revenues[i-1])/market$revenues[i-1]
+}
+market
+
+```
+
+```{r}
+market$screenings_growth <- "N/A"
+for (i in 2:length(market$screenings)){
+market$screenings_growth[i]<-(market$screenings[i]-market$screenings[i-1])/market$screenings[i-1]
+}
+market
+
+```
+```{r}
+market$s_faster_t[1] <-"N/A"
+for (i in 2:length(market$s_faster_t)){
+market$s_faster_t[i] <- (market$screenings_growth[i] > market$tickets_growth[i])
+}
+market
+
+```
+
+
+## Exercise 3: Political Attitudes in the UK
+
+1. How does the proportion of people surveyed who would vote labour if there was a general election tomorrow evolves over time?
+
+
+```{r}
+# Put your code in here
+
+```
+
+
+2. What is the gender distribution of conservatives supporters in the population surveyed?
+
+
+```{r}
+# Put your code in here
+
+```
+
+
+3. How does the gender distribution of conservatives supporters in the population surveyed change in the different waves of the study?
+
+
+```{r}
+# Put your code in here
+
+```
+
+
+4. What is the average revenue of households who support Labour? What about the average revenue of households who support the Conservatives? How does the average revenue of supporters of both parties change over time?
+
+
+```{r}
+# Put your code in here
+
+```
+
+
+5. How does the likelihood to vote in an election changed over time (q3)?
+
+```{r}
+# Put your code in here
+
+```
+
+6. Does having voted in the last local council election (q5_1) change your likelihood to vote in the general election? Does that relationship change over time (try to come up with an informative graph)?
+
+```{r}
+# Put your code in here
+
+```
+
+7. Is there differences in the distribution of voting intentions across the different region of the UK (gor)?
+
+```{r}
+# Put your code in here
+
+```
+
+8. Does age (age and exage) seem to change indiviuals political opinion?
+
+```{r}
+# Put your code in here
+
+```
+
+
+
