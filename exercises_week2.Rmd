@@ -46,7 +46,7 @@ The revenues have already been adjusted for inflation
 ```{r}
 load("./market.RData")
 # Put your code in here
-#1
+# Calculate the average revenue per ticket for each year on record
 market$rev_tic <- market$revenues/market$tickets
 market
 ```
@@ -54,9 +54,12 @@ market
 library(ggplot2)
 data <- data.frame(y = market$year, r = market$rev_tic) 
 ggplot(data, aes(x = market$year, y = market$rev_tic)) + geom_line()
+#- Plot the average revenue per ticket over the time period.
 ```
 
 ```{r}
+#- Calculate the growth in the number of ticket sold from each year to the next.
+
 market$tickets_growth <- "N/A"
 for (i in 2:length(market$tickets)){
 market$tickets_growth[i]<-(market$tickets[i]-market$tickets[i-1])/market$tickets[i-1]
@@ -65,6 +68,7 @@ market
 
 ```
 ```{r}
+#- Describe how revenue and tickets numbers have changed over the period.
 market$revenues_growth <- "N/A"
 for (i in 2:length(market$revenues)){
 market$revenues_growth[i]<-(market$revenues[i]-market$revenues[i-1])/market$revenues[i-1]
@@ -98,7 +102,8 @@ market
 
 ```{r}
 # Put your code in here
-
+data <- read.table("audit_of_political_engagement_1-10_data.tab", sep="\t",header=TRUE)
+sum(data["2","q1"])
 ```
 
 
