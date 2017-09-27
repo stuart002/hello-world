@@ -25,7 +25,7 @@ st[, "States"] <- rownames(st)
 
 ```{r, echo = TRUE}
 # Your code here
-cor(st$SATV, st$SATM)
+cor.test(st$SATV, st$SATM)
 ```
 This indicates that SATV and SATM are highly correlated. They have a strong postive correlation. A state that has a high SATV score would tend to have a high SATM score as well.
 
@@ -35,8 +35,8 @@ This indicates that SATV and SATM are highly correlated. They have a strong post
 
 ```{r, echo = TRUE}
 # Your code here
-cor(st$dollars, st$SATM)
-cor(st$dollars, st$SATV)
+cor.test(st$dollars, st$SATM)
+cor.test(st$dollars, st$SATV)
 
 
 
@@ -58,7 +58,11 @@ ggplot(st)+geom_point(aes(x= pay, y= SATV,color= "red"))+geom_point(aes(x= pay, 
 
 ```{r, echo = TRUE}
 # Your code here
+rm_model <- lm(SATM~ pay, data = st)
+summary(rm_model)
 ```
+I only include pay in the regression model because pay has correlation with SATM shown on the previous question. Also, I tried to add other variables into the model but the p-value were very high. Adding only pay into the model will have a very small p-value so we can conclude the result is significant
+
 
 Exercise 2
 
@@ -76,7 +80,42 @@ Can you build a simple model of the determinants of cost for this dataset? In th
 
 ```{r, echo = TRUE}
 # Your code here
+head(ncl)
+ncol(ncl)
+cor_ncl <- c()
+col_name <-c()
+for (i in 1:ncol(ncl)){
+  cor_ncl[i] <-cor(ncl[,"cost"], ncl[ , i])
+  col_name[i]<-colnames(ncl[i])
+}
+ncl_cor_df<-data.frame(cor_ncl,col_name)
+library(dplyr)
+ncl_cor_df<- arrange(ncl_cor_df, desc(cor_ncl))
+ncl_cor_df
 ```
+
+based on the correlation analysis, i decided to choose date, cap, t1, and ne included in the model becasue they have relatively high correlation coeffcient with cost.
+```{r}
+cost_model <- lm(cost~date+cap+t1, data = ncl)
+summary(cost_model)
+
+```
+reviewing the summary of the regression, I decided to remove t1 from the model since it has very high p-value. Re-run the model.
+```{r}
+cost_model <- lm(cost~date+cap, data = ncl)
+summary(cost_model)
+
+```
+
+Alternatively, I can use a R package to varify my answer
+```{r}
+library(olsrr)
+ols_cost_model <- lm(cost ~ date+t1+t2+cap+pr+ne+ct+bw+ `cum.n`+ pt, data = ncl)
+ols_best_subset(ols_cost_model)
+
+```
+
+
 
 
 Exercise 3
@@ -99,7 +138,7 @@ ggplot(slr, aes(x= sex, y=salary))+geom_boxplot()
 
 ```
 
-Yes, there is discrimination. Although there is outliers on the Male's data, it is clearly that the meidan salary in male is higher than in female. The Q3, Q1 of salry of Male are also higher than those of female. Also the higher salry in Male cohort is much higher than in female cohort.
+Yes, there is discrimination. Although there is outliers on the Male's data, it is clearly that the meidan salary in male is slightly higher than in female. The Q3, Q1 of salry of Male are significantly higher than those of female. Also the highest salry in Male cohort is much higher than in female cohort.
 
 2. Redo the previous plot, but this time separating the plot by rank. Does discrimination looks likely (1-2 sentences)?
 
@@ -117,9 +156,19 @@ The discrimination looks less seriously, but the median of male salary separted 
 
 ```{r}
 # Your code here
+names(slr)
+slr_model1 <-lm(salary~sex, data = slr)
+summary(slr_model1)
+slr_model2 <-lm(salary~sex+`yrs.service`+`yrs.since.phd`+discipline+rank, data = slr)
+summary(slr_model2)
 ```
+If we only run a regression on salary and sex, these seems they are highly correlated.However, if we add other variables into the regression model, we can see that the pvalue for sexMale is significantly higher than 0.05, which we would not reject the Null hypothese and conclude that sexMale has litte influence on salaries. The salaries in fact are influenced by other variables.
 
 
 4. Would you recommend that this college take action about its salary structure? Would you take any other actions? (3-5 sentences)
+```{r}
+ggplot(slr, aes(x=yrs.service, y= salary,color=rank, shape=discipline))+geom_point()
+ggplot(slr, aes(x=yrs.service, y= salary,color=rank, shape=sex))+geom_point()
+```
 
-
+From the above scatter point graph, I can conclude that the salary structure is not bad, because higher rank and higer yrs.service lead to higher salary in a majority of cases.However, the university may try to increase the salaries for those who have performed service to the university for many years, and encourage femal professors to have longer service years. 
