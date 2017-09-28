@@ -49,7 +49,7 @@ The state spending on public education (dollars) has moderate negative correlati
 ```{r}
 # Your code here
 library(ggplot2)
-ggplot(st)+geom_point(aes(x= pay, y= SATV,color= "red"))+geom_point(aes(x= pay, y= SATM, color= "blue"))
+ggplot(st)+geom_point(aes(x= pay, y= SATV,color= "SATV"))+geom_point(aes(x= pay, y= SATM, color= "SATM"))+ylab("SAT Scores")
 ```
 
 
@@ -112,6 +112,7 @@ Alternatively, I can use a R package to varify my answer
 library(olsrr)
 ols_cost_model <- lm(cost ~ date+t1+t2+cap+pr+ne+ct+bw+ `cum.n`+ pt, data = ncl)
 ols_best_subset(ols_cost_model)
+summary(ols_best_subset(ols_cost_model))
 
 ```
 
