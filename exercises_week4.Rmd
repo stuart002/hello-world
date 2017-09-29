@@ -41,7 +41,7 @@ cor.test(st$dollars, st$SATV)
 
 
 ```
-The state spending on public education (dollars) has moderate negative correlation with both SATM and SATV scores. While there is high sepdning on public education, there might be low SATm and SATV scores. 
+The state spending on public education (dollars) has moderate negative correlation with both SATM and SATV scores. While there is high sepdning on public education, there might be low SATM and SATV scores. 
 
 
 3. Create a plot showing how the SATV and SATM scores covary with the average teacher's salary (pay).
@@ -116,6 +116,7 @@ summary(ols_best_subset(ols_cost_model))
 
 ```
 
+According to this package, it is clear that when the regression inlcude and only include date, t2, cap, pr, ne, ct, and cum.n would achieve the highest adjusted R-squre.      
 
 
 
@@ -135,8 +136,6 @@ slr <- Salaries
 ```{r, echo = TRUE}
 # Try using ggplot2 with the geom_boxplot type.
 ggplot(slr, aes(x= sex, y=salary))+geom_boxplot()
-
-
 ```
 
 Yes, there is discrimination. Although there is outliers on the Male's data, it is clearly that the meidan salary in male is slightly higher than in female. The Q3, Q1 of salry of Male are significantly higher than those of female. Also the highest salry in Male cohort is much higher than in female cohort.
